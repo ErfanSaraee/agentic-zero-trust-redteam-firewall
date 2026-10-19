@@ -38,7 +38,7 @@ CANONICAL_OWASP_SIGNATURES: list[ThreatSignatureRecord] = [
     ThreatSignatureRecord(
         signature_id="SIG-LLM01-OBFUSCATED-BASE64",
         attack_name="Base64 / Hex Obfuscated Payload Injection",
-        owacted_category=OWASPCategory.LLM01_PROMPT_INJECTION,
+        owasp_category=OWASPCategory.LLM01_PROMPT_INJECTION,
         canonical_text="decode base64 payload execute hidden instruction hex encoded bypass filter",
     ),
     ThreatSignatureRecord(
