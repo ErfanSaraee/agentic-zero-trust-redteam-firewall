@@ -1,0 +1,34 @@
+services:
+  zero_trust_api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: neural_zero_trust_api
+    restart: unless-stopped
+    env_file:
+      - .env.example
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+
+  gradio_defense_arena:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: neural_gradio_arena_ui
+    restart: unless-stopped
+    env_file:
+      - .env.example
+    environment:
+      API_BASE_URL: "http://zero_trust_api:8000"
+    ports:
+      - "7860:7860"
+    depends_on:
+      zero_trust_api:
+        condition: service_healthy
+    command: python ui/gradio_arena.py
